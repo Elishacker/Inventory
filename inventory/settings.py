@@ -1,8 +1,9 @@
 from pathlib import Path
 import pymysql
+from decouple import config, Csv
 
 # ------------------------------
-# MySQL setup
+# MySQL setup (only needed if you still use MariaDB/MySQL somewhere)
 # ------------------------------
 pymysql.install_as_MySQLdb()
 
@@ -14,15 +15,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ------------------------------
 # SECURITY
 # ------------------------------
-SECRET_KEY = 'dev-secret-key-change-me'  # Change for production
-DEBUG = False  # Set False for production
-ALLOWED_HOSTS = [
-    '*'
-    # 'elifasterinfosec.com',
-    # 'www.elifasterinfosec.com',
-    # 'holystore.elifasterinfosec.com',
-    # 'www.holystore.elifasterinfosec.com'
-]
+SECRET_KEY = config("SECRET_KEY")
+DEBUG = config("DEBUG", default=False, cast=bool)
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="*", cast=Csv())
 
 # ------------------------------
 # APPLICATIONS
@@ -77,19 +72,16 @@ TEMPLATES = [
 ]
 
 # ------------------------------
-# DATABASE
+# DATABASE (PostgreSQL from .env)
 # ------------------------------
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'holystore_db',
-        'USER': 'holy_user',
-        'PASSWORD': 'Holy@2025',
-        'HOST': 'render-db-host',  # e.g., 'localhost' or an IP address
-        'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config("DB_NAME"),
+        'USER': config("DB_USER"),
+        'PASSWORD': config("DB_PASSWORD"),
+        'HOST': config("DB_HOST", default="localhost"),
+        'PORT': config("DB_PORT", default="5432"),
     }
 }
 
@@ -112,11 +104,14 @@ USE_I18N = True
 USE_TZ = True
 
 # ------------------------------
-# STATIC FILES
+# STATIC & MEDIA
 # ------------------------------
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'               # For collectstatic
-STATICFILES_DIRS = [BASE_DIR / 'core' / 'static']   # Local app static files
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'core' / 'static']
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # ------------------------------
 # AUTH REDIRECTS
@@ -124,6 +119,17 @@ STATICFILES_DIRS = [BASE_DIR / 'core' / 'static']   # Local app static files
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
+
+# ------------------------------
+# EMAIL (from .env)
+# ------------------------------
+EMAIL_BACKEND = config("EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend")
+EMAIL_HOST = config("EMAIL_HOST", default="smtp.gmail.com")
+EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="webmaster@localhost")
 
 # ------------------------------
 # DEFAULT PRIMARY KEY
