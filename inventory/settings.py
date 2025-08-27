@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'holystore_db',
         'USER': 'holy_user',
         'PASSWORD': 'Holy@2025',
-        'HOST': 'elifasterinfosec.com',
+        'HOST': 'render-db-host',  # e.g., 'localhost' or an IP address
         'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
