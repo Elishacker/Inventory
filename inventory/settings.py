@@ -1,6 +1,7 @@
 from pathlib import Path
 import pymysql
 from decouple import config, Csv
+import dj_database_url
 
 # ------------------------------
 # MySQL setup (only needed if you still use MariaDB/MySQL somewhere)
@@ -74,16 +75,29 @@ TEMPLATES = [
 # ------------------------------
 # DATABASE (PostgreSQL from .env)
 # ------------------------------
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config("DB_NAME"),
-        'USER': config("DB_USER"),
-        'PASSWORD': config("DB_PASSWORD"),
-        'HOST': config("DB_HOST", default="localhost"),
-        'PORT': config("DB_PORT", default="5432"),
+import dj_database_url
+
+# ------------------------------
+# DATABASE (Use DATABASE_URL if provided, fallback to local env vars)
+# ------------------------------
+DATABASE_URL = config("DATABASE_URL", default=None)
+
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL)
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': config("DB_NAME", default="postgres"),
+            'USER': config("DB_USER", default="postgres"),
+            'PASSWORD': config("DB_PASSWORD", default=""),
+            'HOST': config("DB_HOST", default="localhost"),
+            'PORT': config("DB_PORT", default="5432"),
+        }
+    }
+
 
 # ------------------------------
 # PASSWORD VALIDATORS
