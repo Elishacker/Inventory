@@ -1,0 +1,31 @@
+
+{% extends 'core/base.html' %}
+{% block title %}Sales Reports{% endblock %}
+{% block content %}
+{% load widget_tweaks %}
+<h3 class="mb-3">Sales Reports</h3>
+
+<h5>Daily Totals</h5>
+<table class="table table-sm">
+  <thead><tr><th>Day</th><th>Sales Count</th><th>Total</th></tr></thead>
+  <tbody>
+    {% for r in daily %}
+      <tr><td>{{ r.day }}</td><td>{{ r.count }}</td><td>{{ r.total }}</td></tr>
+    {% empty %}
+      <tr><td colspan="3">No data.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h5 class="mt-4">By Seller</h5>
+<table class="table table-sm">
+  <thead><tr><th>Seller</th><th>Sales Count</th><th>Total</th></tr></thead>
+  <tbody>
+    {% for r in by_seller %}
+      <tr><td>{{ r.seller__username }}</td><td>{{ r.count }}</td><td>{{ r.total }}</td></tr>
+    {% empty %}
+      <tr><td colspan="3">No data.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,18 @@
+Django>=5.0,<6.0
+psycopg2-binary>=2.9 # PostgreSQL (use pg, avoid SQLite in prod)
+django-csp>=3.7 # Content Security Policy
+whitenoise>=6.6 # Static files (and GZip/Brotli)
+django-ratelimit>=4.1 # Basic rate limiting for auth/forms
+django-axes>=6.4 # Bruteforce protection (optional)
+Pillow>=10.0 # Images (thumbnails, certificates)
+reportlab>=4.0 # PDF certificate generation
+django-otp>=1.3 # 2FA (optional, recommended)
+python-dotenv>=1.0 # Env variables
+django-allauth>=1.10 # Social auth (optional)
+requests>=2.30 # HTTP requests (for social auth)
+pyJWT>=2.6 # JWT auth (optional)
+cryptography>=41 # Security (for django-axes, django-otp)
+django-widget-tweaks >=1.4 # Form rendering tweaks
+django-model-utils>=4.0 # Model utilities (optional)
+django-debug-toolbar>=4.0 # Debugging (dev only)
+

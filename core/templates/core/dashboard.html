@@ -1,0 +1,51 @@
+
+{% extends 'core/base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="row g-3">
+  <div class="col-md-3">
+    <div class="card"><div class="card-body">
+      <div class="h6">Products</div>
+      <div class="display-6">{{ product_count }}</div>
+    </div></div>
+  </div>
+  <!-- <div class="col-md-3">
+    <div class="card"><div class="card-body">
+      <div class="h6">Total Sales</div>
+      <div class="display-6">{{ total_sales }}</div>
+    </div></div>
+  </div> -->
+  <div class="col-md-3">
+    <div class="card"><div class="card-body">
+      <div class="h6">Daily Total</div>
+      <div class="display-6">{{ daily_total }}</div>
+    </div></div>
+  </div>
+  <div class="col-md-3">
+    <div class="card"><div class="card-body">
+      <div class="h6">Most Sold</div>
+      <div class="display-6">{{ most_bought }}</div>
+    </div></div>
+  </div>
+  {% if seller_sales is not None %}
+  <div class="col-md-3">
+    <div class="card"><div class="card-body">
+      <div class="h6">Your Sales</div>
+      <div class="display-6">{{ seller_sales }}</div>
+    </div></div>
+  </div>
+  {% endif %}
+</div>
+
+<h5 class="mt-4">Latest Sales</h5>
+<table class="table table-sm">
+  <thead><tr><th>ID</th><th>Seller</th><th>Time</th><th>Total</th></tr></thead>
+  <tbody>
+    {% for s in latest_sales %}
+      <tr><td>{{ s.id }}</td><td>{{ s.seller }}</td><td>{{ s.created_at }}</td><td>{{ s.total }}</td></tr>
+    {% empty %}
+      <tr><td colspan="4">No sales yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends 'core/base.html' %}
+{% block title %}POS{% endblock %}
+{% block content %}
+{% load widget_tweaks %}
+
+<style>
+  /* Match sidebar active link and add hover */
+  .sidebar .nav-link.active {
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 6px;
+  }
+  .sidebar .nav-link:hover {
+    background-color: #e2e6ea;
+    color: #0d6efd;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  /* Card styling */
+  .card {
+    border-radius: 10px;
+  }
+
+  /* Table hover effect */
+  .table tbody tr:hover {
+    background-color: #f1f5f9;
+    transition: background-color 0.2s;
+  }
+
+  /* POS button styling */
+  .btn-complete {
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 6px;
+    border: none;
+    padding: 6px 20px;
+    transition: background-color 0.2s;
+  }
+  .btn-complete:hover {
+    background-color: #0b5ed7;
+    color: white;
+  }
+
+  /* Optional: input hover/focus */
+  input.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
+  }
+</style>
+
+<div class="container-fluid">
+  <h3 class="mb-4">Point of Sale</h3>
+
+  <div class="card shadow-sm">
+    <div class="card-body p-4">
+      <form method="post">
+        {% csrf_token %}
+        <table class="table table-bordered align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Product</th>
+              <th>Price</th>
+              <th>In Stock</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in products %}
+              <tr>
+                <td>{{ p.name }}</td>
+                <td>{{ p.price }}</td>
+                <td>{{ p.stock }}</td>
+                <td style="max-width:120px">
+                  <input type="number" class="form-control" name="qty_{{ p.id }}" min="0" max="{{ p.stock }}" value="0">
+                </td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="4" class="text-center">No products available.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class="text-end">
+          <button type="submit" class="btn-complete">Complete Sale</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

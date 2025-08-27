@@ -1,0 +1,12 @@
+
+{% extends 'core/base.html' %}
+{% block title %}Confirm Delete{% endblock %}
+{% block content %}
+{% load widget_tweaks %}
+<h4>Are you sure you want to delete "{{ object }}"?</h4>
+<form method="post">
+  {% csrf_token %}
+  <button class="btn btn-danger">Yes, delete</button>
+  <a class="btn btn-secondary" href="{% url back_url %}">Cancel</a>
+</form>
+{% endblock %}

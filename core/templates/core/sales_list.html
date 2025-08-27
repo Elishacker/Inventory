@@ -1,0 +1,29 @@
+
+{% extends 'core/base.html' %}
+{% block title %}Sales{% endblock %}
+{% block content %}
+{% load widget_tweaks %}
+<h3 class="mb-3">Sales</h3>
+<table class="table table-striped">
+  <thead><tr><th>ID</th><th>Seller</th><th>Time</th><th>Total</th><th>Items</th></tr></thead>
+  <tbody>
+  {% for s in sales %}
+    <tr>
+      <td>{{ s.id }}</td>
+      <td>{{ s.seller }}</td>
+      <td>{{ s.created_at }}</td>
+      <td>{{ s.total }}</td>
+      <td>
+        <ul class="mb-0">
+          {% for it in s.items.all %}
+            <li>{{ it.product.name }} × {{ it.quantity }} @ {{ it.price }}</li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5">No sales yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
