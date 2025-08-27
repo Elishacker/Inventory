@@ -17,10 +17,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'dev-secret-key-change-me'  # Change for production
 DEBUG = False  # Set False for production
 ALLOWED_HOSTS = [
-    'elifasterinfosec.com',
-    'www.elifasterinfosec.com',
-    'holystore.elifasterinfosec.com',
-    'www.holystore.elifasterinfosec.com'
+    '*'
+    # 'elifasterinfosec.com',
+    # 'www.elifasterinfosec.com',
+    # 'holystore.elifasterinfosec.com',
+    # 'www.holystore.elifasterinfosec.com'
 ]
 
 # ------------------------------
