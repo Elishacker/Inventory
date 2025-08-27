@@ -4,7 +4,7 @@ from decouple import config, Csv
 import dj_database_url
 
 # ------------------------------
-# MySQL setup (only needed if you still use MariaDB/MySQL somewhere)
+# MySQL support (if ever needed)
 # ------------------------------
 pymysql.install_as_MySQLdb()
 
@@ -30,7 +30,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # third-party
     'widget_tweaks',
+
+    # local
     'core',
 ]
 
@@ -39,6 +43,10 @@ INSTALLED_APPS = [
 # ------------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    # WhiteNoise for static files in production
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -73,12 +81,7 @@ TEMPLATES = [
 ]
 
 # ------------------------------
-# DATABASE (PostgreSQL from .env)
-# ------------------------------
-import dj_database_url
-
-# ------------------------------
-# DATABASE (Use DATABASE_URL if provided, fallback to local env vars)
+# DATABASE (Use DATABASE_URL if provided, fallback to env vars)
 # ------------------------------
 DATABASE_URL = config("DATABASE_URL", default=None)
 
@@ -97,7 +100,6 @@ else:
             'PORT': config("DB_PORT", default="5432"),
         }
     }
-
 
 # ------------------------------
 # PASSWORD VALIDATORS
@@ -124,6 +126,9 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'core' / 'static']
 
+# WhiteNoise compressed storage
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -135,7 +140,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 # ------------------------------
-# EMAIL (from .env)
+# EMAIL
 # ------------------------------
 EMAIL_BACKEND = config("EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend")
 EMAIL_HOST = config("EMAIL_HOST", default="smtp.gmail.com")
