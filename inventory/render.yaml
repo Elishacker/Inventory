@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: inventory
+    env: python
+    buildCommand: "./manage.py collectstatic --noinput"
+    startCommand: "gunicorn inventory.wsgi:application --bind 0.0.0.0:$PORT"
