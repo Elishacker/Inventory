@@ -1,0 +1,53 @@
+{
+    "version": 2,
+  
+    "builds": [
+      {
+        "src": "manage.py",
+        "use": "@vercel/python"
+      },
+      {
+        "src": "staticfiles/**/*",
+        "use": "@vercel/static"
+      }
+    ],
+  
+    "routes": [
+      {
+        "src": "/static/(.*)",
+        "dest": "/staticfiles/$1"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "manage.py"
+      }
+    ],
+  
+    "env": {
+      "DATABASE_URL": "postgresql://holy_user:5FkSMgLKOb6P5bfO5iUjP41fELKznjvD@dpg-d2ni9svfte5s739g75hg-a.oregon-postgres.render.com/holystore_db",
+      "SECRET_KEY": "kq9e4z%r8z3c@7p!2t-(2#=ph7-2n)mgq$vwn4o-4&tu0a&b6p",
+      "DEBUG": "False",
+      "ALLOWED_HOSTS": "inventory-jj90.onrender.com,.vercel.app",
+      "EMAIL_BACKEND": "django.core.mail.backends.smtp.EmailBackend",
+      "EMAIL_HOST": "smtp.gmail.com",
+      "EMAIL_PORT": "587",
+      "EMAIL_USE_TLS": "True",
+      "EMAIL_HOST_USER": "your_email@gmail.com",
+      "EMAIL_HOST_PASSWORD": "your_app_password",
+      "DEFAULT_FROM_EMAIL": "Holystore <your_email@gmail.com>"
+    },
+  
+    "regions": ["iad1", "fra1", "sfo1"],
+  
+    "functions": {
+      "api/**/*.py": {
+        "runtime": "python3.9",
+        "maxDuration": 15,
+        "memory": 512
+      }
+    },
+  
+    "cleanUrls": true,
+    "trailingSlash": false
+  }
+  
